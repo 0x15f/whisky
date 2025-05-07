@@ -65,17 +65,14 @@ class Install extends Command
             $hook->install();
 
             if ($this->option('verbose')) {
+                $this->info("Ensuring {$hook->name} hook is executable...");
+            }
+            $hook->ensureExecutable();
+
+            if ($this->option('verbose')) {
                 $this->info("{$hook->name} git hook installed successfully.");
             }
         });
-
-        if ($this->platform->isNotWindows()) {
-            if ($this->option('verbose')) {
-                $this->info('Verifying hooks are executable...');
-            }
-            exec('chmod +x '.Platform::cwd('.git/hooks').'/*');
-            exec('chmod +x '.Whisky::base_path('bin/run-hook'));
-        }
 
         $this->info('Git hooks installed successfully.');
 

@@ -4,6 +4,7 @@ namespace ProjektGopher\Whisky\Commands;
 
 use LaravelZero\Framework\Commands\Command;
 use ProjektGopher\Whisky\Hook;
+use ProjektGopher\Whisky\Platform;
 
 /**
  * TODO: This has a lot of duplication wrt Commands\Uninstall and Commands\Install.
@@ -13,6 +14,12 @@ class Update extends Command
     protected $signature = 'update';
 
     protected $description = 'Update git hooks';
+
+    public function __construct(
+        public Platform $platform,
+    ) {
+        parent::__construct();
+    }
 
     public function handle(): int
     {
@@ -35,6 +42,10 @@ class Update extends Command
             }
 
             $hook->install();
+
+            if ($this->option('verbose')) {
+                $this->info("Ensuring {$hook->name} hook is executable...");
+            }
             $hook->ensureExecutable();
 
             if ($this->option('verbose')) {
@@ -42,7 +53,7 @@ class Update extends Command
             }
         });
 
-        $this->line('done.');
+        $this->line('Git hooks updated successfully.');
 
         return Command::SUCCESS;
     }

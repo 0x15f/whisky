@@ -94,7 +94,10 @@ class Hook
     public function ensureExecutable(): void
     {
         if ((new Platform)->isNotWindows()) {
-            exec('chmod +x '.Platform::cwd(".git/hooks/{$this->hook}"));
+            $path = Platform::cwd(".git/hooks/{$this->hook}");
+            $path = Platform::escapeSpaces($path);
+
+            exec("chmod +x {$path}");
         }
     }
 
@@ -162,9 +165,9 @@ class Hook
         ]);
     }
 
-    ////////////////////////////////////////
-    ////         Static methods         ////
-    ////////////////////////////////////////
+    // //////////////////////////////////////
+    // //         Static methods         ////
+    // //////////////////////////////////////
 
     /**
      * Static Constructor.

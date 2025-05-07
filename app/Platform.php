@@ -33,6 +33,11 @@ class Platform
         return $path;
     }
 
+    public static function escapeSpaces(string $path): string
+    {
+        return preg_replace('/(?<!\\\) /', '\\ ', $path);
+    }
+
     public static function getGlobalComposerHome(): string
     {
         return rtrim(shell_exec('composer -n global config home --quiet'), "\n");
