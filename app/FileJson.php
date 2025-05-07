@@ -59,7 +59,7 @@ class FileJson
 
         $schema = Schema::import($this->getSchemaValidation(), $options);
 
-        $schema->in($content);
+       // $schema->in($content);
     }
 
     protected function getSchemaValidation(): ?\stdClass
